@@ -1,22 +1,37 @@
-import json
-import numpy
-from json import JSONEncoder
-from main import x, y, w, h
-numpyArray = x, y, w, h
 
+# ----- A simple TCP client program in Python using send() function -----
 
-class NumpyArrayEncoder(JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, numpy.ndarray):
-            return obj.tolist()
-        return JSONEncoder.default(self, obj)
-
-
-numpyData = {'array': numpyArray}
-encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
-print('Printing JSON')
-print(encodedNumpyData)
+import socket
 
 
 
+# Create a client socket
+
+clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+
+
+
+# Connect to the server
+
+clientSocket.connect(("23.254.176.188" ,8000));
+
+
+
+# Send data to server
+
+data = "Hello Server!";
+
+clientSocket.send(data.encode());
+
+
+
+# Receive data from server
+
+dataFromServer = clientSocket.recv(1024);
+
+
+
+# Print to the console
+
+print(dataFromServer.decode());
 

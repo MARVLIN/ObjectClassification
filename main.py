@@ -1,8 +1,15 @@
 import numpy as np
-import json
 import numpy
+
 from json import JSONEncoder
+
 import cv2
+
+import socket
+import json
+import sys
+
+
 
 thres = 0.45  # Threshold to detect object
 nms_threshold = 0.2
@@ -51,6 +58,7 @@ with open(classFile,'rt') as f:
             cv2.imshow('Output', img)
             cv2.waitKey(1)
 
+
             # retrieving JSON from ndarray
             class NumpyArrayEncoder(JSONEncoder):
                 def default(self, obj):
@@ -63,12 +71,32 @@ with open(classFile,'rt') as f:
 
             numpyData = {'array': numpyArray}
             encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
-            print('Printing JSON')
-            print(encodedNumpyData)
+            # print('Printing JSON')
+            # print(encodedNumpyData) json array of coordinates
+
+
+            HOST, PORT = '23.254.176.188:22', 22
+
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+            try:
+                sock.connect((HOST, PORT))
+                sock.sendall(bytes(encodedNumpyData,encoding='utf-8'))
+
+                received = sock.recv(1024)
+                received = received.decode('utf-8')
+            finally:
+                sock.close()
+
+            print("Sent:     {}".format(encodedNumpyData))
+            print("Received: {}".format(received))
+
+
 
         # If no objects in ndarray: indices
         except:
             print('No objects detected')
+
 
 
 

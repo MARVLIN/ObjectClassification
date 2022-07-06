@@ -2,12 +2,15 @@ import numpy as np
 import numpy
 
 from json import JSONEncoder
-
+import requests
 import cv2
 
 import socket
 import json
 import sys
+
+import subprocess
+
 
 
 
@@ -45,11 +48,16 @@ with open(classFile,'rt') as f:
         indices = cv2.dnn.NMSBoxes(bbox, confs, thres, nms_threshold)
         # print(indices)
 
+
         # LOOP for detection from the camera
         try:
             i = indices[0]
             box = bbox[i]
             x, y, w, h = box[0], box[1], box[2], box[3]
+            reqCommand = 'Capture_pic'
+            command = input('Enter command for a snap')
+            if command == reqCommand:
+                out = cv2.imwrite('capture.jpg', indices)
 
             cv2.rectangle(img, (x, y), (x + w, h + y), color=(0, 255, 0), thickness=2)
             cv2.putText(img, classNames[classIds[i] - 1].upper(), (box[0] + 10, box[1] + 30),
@@ -67,30 +75,16 @@ with open(classFile,'rt') as f:
                     return JSONEncoder.default(self, obj)
 
 
-            numpyArray = numpy.array([[11, 22, 33], [44, 55, 66], [77, 88, 99]])
+            numpyArray = numpy.array([x, y, w, h])
 
             numpyData = {'array': numpyArray}
             encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
             # print('Printing JSON')
-            # print(encodedNumpyData) json array of coordinates
+            (encodedNumpyData) # json array of coordinates
 
 
-            HOST, PORT = '23.254.176.188:22', 22
-
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-            try:
-                sock.connect((HOST, PORT))
-                sock.sendall(bytes(encodedNumpyData,encoding='utf-8'))
-
-                received = sock.recv(1024)
-                received = received.decode('utf-8')
-            finally:
-                sock.close()
-
-            print("Sent:     {}".format(encodedNumpyData))
-            print("Received: {}".format(received))
-
+            ## configuring ssh
+            subprocess.run(["ssh", encodedNumpyData, "root@23.254.176.188:8000"])
 
 
         # If no objects in ndarray: indices

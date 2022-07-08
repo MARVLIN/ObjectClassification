@@ -1,5 +1,6 @@
 import socket
 import sys
+from main import encodedNumpyData
 
 
 HEADER = 64
@@ -22,11 +23,6 @@ def send(msg):
     client.send(message)
     print(client.recv(2048).decode(FORMAT))
 
-
-send("Hello World!")
-input()
-send("Hello Everyone!")
-input()
-send("Hello Tim!")
+send(encodedNumpyData)
 
 send(DISCONNECT_MESSAGE)

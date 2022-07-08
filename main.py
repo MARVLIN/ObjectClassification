@@ -79,7 +79,7 @@ with open(classFile, 'rt') as f:
             # print('Printing JSON')
             print(encodedNumpyData)  # json array of coordinates
 
-            ## configuring ssh
+            # configuring ssh
             HEADER = 64
             PORT = 5050
             FORMAT = 'utf-8'
@@ -89,6 +89,7 @@ with open(classFile, 'rt') as f:
 
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client.connect(ADDR)
+
 
             def send(msg):
                 message = msg.encode(FORMAT)
@@ -108,4 +109,3 @@ with open(classFile, 'rt') as f:
         # If no objects in ndarray: indices
         except:
             print('No objects detected')
-

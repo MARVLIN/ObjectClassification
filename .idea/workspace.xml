@@ -77,7 +77,7 @@
       <recent name="$PROJECT_DIR$/models" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.yolov5">
     <configuration name="RemoteServer" type="PythonConfigurationType" factoryName="Python">
       <module name="ObjectRecognition" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -106,7 +106,29 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../pythonProject/venv/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../_API_/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="yolov5" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/Desktop/ObjectDetection/yolov5/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -124,6 +146,7 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.yolov5" />
       <item itemvalue="Python.RemoteServer" />
     </list>
   </component>
@@ -151,6 +174,7 @@
       <workItem from="1659392930685" duration="512000" />
       <workItem from="1659393845592" duration="210000" />
       <workItem from="1659394061101" duration="20000" />
+      <workItem from="1659394570018" duration="766000" />
     </task>
     <task id="LOCAL-00001" summary="Socket implemented">
       <created>1656977892755</created>
@@ -236,9 +260,11 @@
     <option name="LAST_COMMIT_MESSAGE" value="model for detecting windows in .pt &amp; .onnx formats + requirements.txt + export.py for exporting the model to .onnx format" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ObjectClassification2$main.coverage" NAME="main Coverage Results" MODIFIED="1659396079944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ObjectDetection2$main.coverage" NAME="main Coverage Results" MODIFIED="1657025654253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ObjectRecognition$main.coverage" NAME="main Coverage Results" MODIFIED="1657242675326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ObjectClassification$main.coverage" NAME="main Coverage Results" MODIFIED="1659393430119" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ObjectClassification2$ObjectClassification2.coverage" NAME="ObjectClassification2 Coverage Results" MODIFIED="1659396207471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
     <SUITE FILE_PATH="coverage/ObjectRecognition$RemoteServer.coverage" NAME="RemoteServer Coverage Results" MODIFIED="1656979881584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

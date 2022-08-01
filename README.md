@@ -1,2 +1,0 @@
-# ObjectClassification
-Documentation soon

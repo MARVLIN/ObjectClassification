@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="94238f0e-e1e7-4bf7-b1cb-cc83f524543b" name="Changes" comment="Models are in model folder, paths edit to main.py, client module implemented in main.py" />
+    <list default="true" id="94238f0e-e1e7-4bf7-b1cb-cc83f524543b" name="Changes" comment="Models are in model folder, paths edit to main.py, client module implemented in main.py">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,8 +46,8 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/test.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2BTr7LEqEngW8qdcJeTos4netLI" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -63,6 +67,8 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -142,6 +148,9 @@
       <workItem from="1657192916499" duration="2047000" />
       <workItem from="1657236378262" duration="101000" />
       <workItem from="1657237671197" duration="4835000" />
+      <workItem from="1658791361765" duration="625000" />
+      <workItem from="1658968097986" duration="37000" />
+      <workItem from="1658973112740" duration="1521000" />
     </task>
     <task id="LOCAL-00001" summary="Socket implemented">
       <created>1656977892755</created>

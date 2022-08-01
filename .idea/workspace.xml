@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="94238f0e-e1e7-4bf7-b1cb-cc83f524543b" name="Changes" comment="Models are in model folder, paths edit to main.py, client module implemented in main.py">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
+    <list default="true" id="94238f0e-e1e7-4bf7-b1cb-cc83f524543b" name="Changes" comment="Updated file for detection + snap function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +44,6 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/test.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2BTr7LEqEngW8qdcJeTos4netLI" />
@@ -109,7 +106,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../pythonProject/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -151,6 +148,8 @@
       <workItem from="1658791361765" duration="625000" />
       <workItem from="1658968097986" duration="37000" />
       <workItem from="1658973112740" duration="1521000" />
+      <workItem from="1659392930685" duration="512000" />
+      <workItem from="1659393845592" duration="63000" />
     </task>
     <task id="LOCAL-00001" summary="Socket implemented">
       <created>1656977892755</created>
@@ -187,7 +186,21 @@
       <option name="project" value="LOCAL" />
       <updated>1657242288625</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Updated file for detection + snap function">
+      <created>1659393150990</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1659393150990</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Updated file for detection + snap function">
+      <created>1659393161370</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659393161370</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,11 +223,13 @@
     <MESSAGE value="Implemented snap function" />
     <MESSAGE value="Client Module" />
     <MESSAGE value="Models are in model folder, paths edit to main.py, client module implemented in main.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Models are in model folder, paths edit to main.py, client module implemented in main.py" />
+    <MESSAGE value="Updated file for detection + snap function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated file for detection + snap function" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ObjectDetection2$main.coverage" NAME="main Coverage Results" MODIFIED="1657025654253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ObjectRecognition$main.coverage" NAME="main Coverage Results" MODIFIED="1657242675326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ObjectClassification$main.coverage" NAME="main Coverage Results" MODIFIED="1659393430119" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ObjectRecognition$RemoteServer.coverage" NAME="RemoteServer Coverage Results" MODIFIED="1656979881584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

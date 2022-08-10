@@ -1,44 +1,41 @@
 import socket
-import threading
+from _thread import *
 
-HEADER = 64
-PORT = 5050
-SERVER = socket.gethostbyname(socket.gethostname())
-ADDR = (SERVER, PORT)
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
+host = '127.0.0.1'
+port = 1234
+ThreadCount = 0
 
 
-def handle_client(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected.")
-
-    connected = True
-    while connected:
-        msg_length = conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(FORMAT)
-            if msg == DISCONNECT_MESSAGE:
-                connected = False
-
-            print(f"[{addr}] {msg}")
-            conn.send("Msg received".encode(FORMAT))
-
-    conn.close()
-
-
-def start():
-    server.listen()
-    print(f"[LISTENING] Server is listening on {SERVER}")
+def client_handler(connection):
+    connection.send(str.encode('You are now connected to the replay server... Type BYE to stop'))
     while True:
-        conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
-        # print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
+        data = connection.recv(2048)
+        message = data.decode('utf-8')
+        if message == 'BYE':
+            break
+        reply = f'Server: {message}'
+        connection.sendall(str.encode(reply))
+        print(message)
+    connection.close()
 
 
-print("[STARTING] server is starting...")
-start()
+def accept_connections(ServerSocket):
+    Client, address = ServerSocket.accept()
+    print('Connected to: ' + address[0] + ':' + str(address[1]))
+    start_new_thread(client_handler, (Client,))
+
+
+def start_server(host, port):
+    ServerSocket = socket.socket()
+    try:
+        ServerSocket.bind((host, port))
+    except socket.error as e:
+        print(str(e))
+    print(f'Server is listing on {host}:{port}')
+    ServerSocket.listen()
+
+    while True:
+        accept_connections(ServerSocket)
+
+
+start_server(host, port)

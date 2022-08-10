@@ -1,32 +1,17 @@
 import socket
-import sys
+host = '127.0.0.1' # address of the server
+port = 1234 # port of the server
 
-
-HEADER = 64
-PORT = 5050
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
-SERVER = "23.254.176.188"
-ADDR = (SERVER, PORT)
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(ADDR)
-
-
-def send(msg):
-    message = msg.encode(FORMAT)
-    msg_length = len(message)
-    send_length = str(msg_length).encode(FORMAT)
-    send_length += b' ' * (HEADER - len(send_length))
-    client.send(send_length)
-    client.send(message)
-    print(client.recv(2048).decode(FORMAT))
-
-
-send("Hello World!")
-input()
-send("Hello Everyone!")
-input()
-send("Hello Tim!")
-
-send(DISCONNECT_MESSAGE)
+ClientSocket = socket.socket()
+print('Waiting for connection')
+try:
+    ClientSocket.connect((host, port))
+except socket.error as e:
+    print(str(e))
+Response = ClientSocket.recv(2048)
+while True:
+    Input = input('Your message: ')
+    ClientSocket.send(str.encode(Input))
+    Response = ClientSocket.recv(2048)
+    print(Response.decode('utf-8'))
+ClientSocket.close()

@@ -1,41 +1,51 @@
+import threading
 import socket
-from _thread import *
 
 host = '127.0.0.1'
-port = 1234
-ThreadCount = 0
+port = 5000
 
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((host, port))
+server.listen()
 
-def client_handler(connection):
-    connection.send(str.encode('You are now connected to the replay server... Type BYE to stop'))
+clients = []
+nicknames = []
+
+def broadcast(message):
+    for client in clients:
+        client.send(message)
+
+def handle(client):
     while True:
-        data = connection.recv(2048)
-        message = data.decode('utf-8')
-        if message == 'BYE':
+        try:
+            message = client.recv(1024)
+            broadcast(message)
+            
+        except:
+            index = clients.index(client)
+            clients.remove(client)
+            client.close()
+            nickname = nicknames[index]
+            broadcast(f'{nickname} left'.encode('ascii'))
+            nicknames.remove(nickname)
             break
-        reply = f'Server: {message}'
-        connection.sendall(str.encode(reply))
-        print(message)
-    connection.close()
 
-
-def accept_connections(ServerSocket):
-    Client, address = ServerSocket.accept()
-    print('Connected to: ' + address[0] + ':' + str(address[1]))
-    start_new_thread(client_handler, (Client,))
-
-
-def start_server(host, port):
-    ServerSocket = socket.socket()
-    try:
-        ServerSocket.bind((host, port))
-    except socket.error as e:
-        print(str(e))
-    print(f'Server is listing on {host}:{port}')
-    ServerSocket.listen()
-
+def receive():
     while True:
-        accept_connections(ServerSocket)
+        client, address = server.accept()
+        print(f'Connected with{str(address)}')
 
+        client.send('NICK'.encode('ascii'))
+        nickname = client.recv(1024).decode('ascii')
+        nicknames.append(nickname)
+        clients.append(client)
 
-start_server(host, port)
+        print(f'Nickname of the client is {nickname}')
+        broadcast(f'{nickname} joined'.encode('ascii'))
+        client.send('connected to the server'.encode('ascii'))
+
+        thread = threading.Thread(target=handle, args=(client, address))
+        thread.start()
+
+print('[Server is listening]')
+receive()

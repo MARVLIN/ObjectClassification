@@ -1,7 +1,7 @@
 import threading
 import socket
 
-host = '127.0.0.1'
+host = socket.gethostbyname(socket.gethostname())
 port = 5000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,7 +20,7 @@ def handle(client):
         try:
             message = client.recv(1024)
             broadcast(message)
-            
+
         except:
             index = clients.index(client)
             clients.remove(client)
@@ -44,8 +44,8 @@ def receive():
         broadcast(f'{nickname} joined'.encode('ascii'))
         client.send('connected to the server'.encode('ascii'))
 
-        thread = threading.Thread(target=handle, args=(client, address))
+        thread = threading.Thread(target=handle, args=(client,))
         thread.start()
 
-print('[Server is listening]')
+print(f'Server is listening at {host}')
 receive()

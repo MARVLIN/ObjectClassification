@@ -1,51 +1,31 @@
-import threading
+import websockets
+import asyncio
 import socket
 
-host = socket.gethostbyname(socket.gethostname())
-port = 5000
+PORT = 8080
+HOST = socket.gethostbyname(socket.gethostname())
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
-server.listen()
+print(f'[Server is listening on] {HOST}:{PORT}')
 
-clients = []
-nicknames = []
+connected = set()
 
-def broadcast(message):
-    for client in clients:
-        client.send(message)
+async def echo(websocket, path):
+    print('Client connected')
+    connected.add(websocket)
+    try:
+        async for message in websocket:
+            print(f'Message received: {message}')
+            for conn in connected:
+                if conn != websocket:
+                    await conn.send(f'Message: {message}')
+    except websockets.ConnectionClosed as e:
+        print('Client left')
+    finally:
+        connected.remove(websocket)
 
-def handle(client):
-    while True:
-        try:
-            message = client.recv(1024)
-            broadcast(message)
 
-        except:
-            index = clients.index(client)
-            clients.remove(client)
-            client.close()
-            nickname = nicknames[index]
-            broadcast(f'{nickname} left'.encode('ascii'))
-            nicknames.remove(nickname)
-            break
 
-def receive():
-    while True:
-        client, address = server.accept()
-        print(f'Connected with{str(address)}')
+start_server = websockets.serve(echo, HOST, PORT)
 
-        client.send('NICK'.encode('ascii'))
-        nickname = client.recv(1024).decode('ascii')
-        nicknames.append(nickname)
-        clients.append(client)
-
-        print(f'Nickname of the client is {nickname}')
-        broadcast(f'{nickname} joined'.encode('ascii'))
-        client.send('connected to the server'.encode('ascii'))
-
-        thread = threading.Thread(target=handle, args=(client,))
-        thread.start()
-
-print(f'Server is listening at {host}')
-receive()
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()

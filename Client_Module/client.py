@@ -1,33 +1,17 @@
-import socket
-import threading
-
-nickname = input('enter a nickname')
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('127.0.0.1', 5000))
-
-def receive():
-    while True:
-        try:
-            message = client.recv(1024).decode('ascii')
-            if message == 'NICK':
-                client.send(nickname.encode('ascii'))
-            else:
-                print(message)
-        except:
-            print('An error occured')
-            client.close()
-            break
+import websockets
+import asyncio
 
 
-def write():
-    while True:
-        message = f'{nickname}: {input("")}'
-        client.send(message.encode('ascii'))
 
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
+async def listen():
+    url = 'ws://23.254.176.188:8080'
 
-write_thread = threading.Thread(target=write)
-write_thread.start()
+    async with websockets.connect(url) as ws:
+        await ws.send('Hello server')
 
+        while True:
+            msg = await ws.recv()
+            print(msg)
+
+
+asyncio.get_event_loop().run_until_complete(listen())

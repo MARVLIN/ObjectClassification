@@ -1,42 +1,40 @@
 import cv2
-import run_detect
 import requests
 
-cam = cv2.VideoCapture(0)
+from time import sleep
 
-cv2.namedWindow("test")
+def capture():
+    camera = cv2.VideoCapture(0)
+    i = 0
+    sleep(2)
+    while i < 1:
 
-img_counter = 0
+        return_value, image = camera.read()
 
-while True:
-    ret, frame = cam.read()
-    if not ret:
-        print("failed to grab frame")
-        break
-    cv2.imshow("test", frame)
-
-    k = cv2.waitKey(1)
-    if k%256 == 27:
-        # ESC pressed
-        print("Escape hit, closing...")
-        break
-    elif k%256 == 32:
-        # SPACE pressed
-        img_name = "opencv_frame_{}.png".format(img_counter)
-        cv2.imwrite(img_name, frame)
-        print("{} written!".format(img_name))
-        img_counter += 1
-
+        cv2.imwrite('opencv.png', image)
+        i += 1
         url = 'http://art1x.pythonanywhere.com/create/'
-        files = {'image': open('opencv_frame_0.png', 'rb')}
+        files = {'image': open('opencv.png', 'rb')}
         r = requests.post(url, files=files)
 
         print(r.status_code)
 
-cam.release()
-
-cv2.destroyAllWindows()
-
+    del(camera)
+    return True
 
 
-run_detect.run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

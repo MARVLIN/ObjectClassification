@@ -1,28 +1,4 @@
-# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
-"""
-Run inference on images, videos, directories, streams, etc.
 
-Usage - sources:
-    $ python path/to/detect.py --weights yolov5s.pt --source 0              # webcam
-                                                             img.jpg        # image
-                                                             vid.mp4        # video
-                                                             path/          # directory
-                                                             path/*.jpg     # glob
-                                                             'https://youtu.be/Zgi9g1ksQHc'  # YouTube
-                                                             'rtsp://example.com/media.mp4'  # RTSP, RTMP, HTTP stream
-
-Usage - formats:
-    $ python path/to/detect.py --weights yolov5s.pt                 # PyTorch
-                                         yolov5s.torchscript        # TorchScript
-                                         yolov5s.onnx               # ONNX Runtime or OpenCV DNN with --dnn
-                                         yolov5s.xml                # OpenVINO
-                                         yolov5s.engine             # TensorRT
-                                         yolov5s.mlmodel            # CoreML (macOS-only)
-                                         yolov5s_saved_model        # TensorFlow SavedModel
-                                         yolov5s.pb                 # TensorFlow GraphDef
-                                         yolov5s.tflite             # TensorFlow Lite
-                                         yolov5s_edgetpu.tflite     # TensorFlow Edge TPU
-"""
 # Imports for object detection
 import argparse
 import os
@@ -49,6 +25,10 @@ from utils.general import (LOGGER, check_file, check_img_size, check_imshow, che
                            increment_path, non_max_suppression, print_args, scale_coords, strip_optimizer, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
+
+# local imports 
+import client
+from main import capture
 
 
 @torch.no_grad()
@@ -157,8 +137,10 @@ def run(
 
                 # printing coordinates
                 count = 0
-                command = input('Enter command for a snap')
-                if command == 'n':
+
+                if client.listen():
+                    capture()
+
                     for *xyxy, conf, cls in reversed(det):
                         count += 1
                         c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
@@ -214,34 +196,34 @@ def run(
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
-            # Stream results
-            im0 = annotator.result()
-            if view_img:
-                if platform.system() == 'Linux' and p not in windows:
-                    windows.append(p)
-                    cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
-                    cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                cv2.imshow(str(p), im0)
-                cv2.waitKey(1)  # 1 millisecond
+                    # Stream results
+                    im0 = annotator.result()
+                    if view_img:
+                        if platform.system() == 'Linux' and p not in windows:
+                            windows.append(p)
+                            cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
+                            cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
+                        cv2.imshow(str(p), im0)
+                        cv2.waitKey(1)  # 1 millisecond
 
-            # Save results (image with detections)
-            if save_img:
-                if dataset.mode == 'image':
-                    cv2.imwrite(save_path, im0)
-                else:  # 'video' or 'stream'
-                    if vid_path[i] != save_path:  # new video
-                        vid_path[i] = save_path
-                        if isinstance(vid_writer[i], cv2.VideoWriter):
-                            vid_writer[i].release()  # release previous video writer
-                        if vid_cap:  # video
-                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                        else:  # stream
-                            fps, w, h = 30, im0.shape[1], im0.shape[0]
-                        save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
-                        vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
-                    vid_writer[i].write(im0)
+                    # Save results (image with detections)
+                    if save_img:
+                        if dataset.mode == 'image':
+                            cv2.imwrite(save_path, im0)
+                        else:  # 'video' or 'stream'
+                            if vid_path[i] != save_path:  # new video
+                                vid_path[i] = save_path
+                                if isinstance(vid_writer[i], cv2.VideoWriter):
+                                    vid_writer[i].release()  # release previous video writer
+                                if vid_cap:  # video
+                                    fps = vid_cap.get(cv2.CAP_PROP_FPS)
+                                    w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                                    h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                                else:  # stream
+                                    fps, w, h = 30, im0.shape[1], im0.shape[0]
+                                save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
+                                vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
+                            vid_writer[i].write(im0)
 
         # Print time (inference-only)
         LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s)')

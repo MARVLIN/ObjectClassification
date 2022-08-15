@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="94238f0e-e1e7-4bf7-b1cb-cc83f524543b" name="Changes" comment="model for detecting windows in .pt &amp; .onnx formats + requirements.txt + export.py for exporting the model to .onnx format">
-      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="94238f0e-e1e7-4bf7-b1cb-cc83f524543b" name="Changes" comment="automation of snap" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +32,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -153,6 +151,7 @@
       <workItem from="1659393845592" duration="210000" />
       <workItem from="1659394061101" duration="379000" />
       <workItem from="1659596630023" duration="32000" />
+      <workItem from="1660523362760" duration="318000" />
     </task>
     <task id="LOCAL-00001" summary="Socket implemented">
       <created>1656977892755</created>
@@ -217,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659394218519</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="automation of snap">
+      <created>1660523666266</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1660523666266</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,7 +248,8 @@
     <MESSAGE value="Models are in model folder, paths edit to main.py, client module implemented in main.py" />
     <MESSAGE value="Updated file for detection + snap function" />
     <MESSAGE value="model for detecting windows in .pt &amp; .onnx formats + requirements.txt + export.py for exporting the model to .onnx format" />
-    <option name="LAST_COMMIT_MESSAGE" value="model for detecting windows in .pt &amp; .onnx formats + requirements.txt + export.py for exporting the model to .onnx format" />
+    <MESSAGE value="automation of snap" />
+    <option name="LAST_COMMIT_MESSAGE" value="automation of snap" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ObjectDetection2$main.coverage" NAME="main Coverage Results" MODIFIED="1657025654253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

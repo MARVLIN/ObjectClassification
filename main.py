@@ -1,40 +1,35 @@
 import cv2
+from time import sleep
 import requests
 
-from time import sleep
 
 def capture():
-    camera = cv2.VideoCapture(0)
-    i = 0
-    sleep(2)
-    while i < 1:
+    cam = cv2.VideoCapture(0)
+    sleep(1.5)
 
-        return_value, image = camera.read()
+    cv2.namedWindow("capture")
 
-        cv2.imwrite('opencv.png', image)
-        i += 1
-        url = 'http://art1x.pythonanywhere.com/create/'
-        files = {'image': open('opencv.png', 'rb')}
-        r = requests.post(url, files=files)
+    img_counter = 0
 
-        print(r.status_code)
+    while True:
+        ret, frame = cam.read()
 
-    del(camera)
-    return True
+        cv2.imshow("capturing", frame)
 
+        k = cv2.waitKey(1)
 
+        # SPACE pressed
+        img_name = "opencv_frame_{}.png".format(img_counter)
+        cv2.imwrite(img_name, frame)
+        print("{} written!".format(img_name))
+        cam.release()
+        img_counter += 1
+        if img_counter == 1:
+            cv2.destroyAllWindows()
+            url = 'http://art1x.pythonanywhere.com/snippets/1/'
+            files = {'image': open('opencv_frame_0.png', 'rb')}
+            #headers = {'Authorization': 'Token a50ad9e5ff215abd67028a8bd904a11ac0b1409f'}
+            r = requests.put(url, files=files)
+            print(r)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            return True

@@ -1,17 +1,16 @@
 
 # Imports for object detection
 import argparse
+import json
+import json.encoder
 import os
-import platform
 import sys
 from pathlib import Path
 
-import torch
-import torch.backends.cudnn as cudnn
-
 # Imports for POST request
 import requests
-import json
+import torch
+import torch.backends.cudnn as cudnn
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -21,12 +20,11 @@ ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 from models.common import DetectMultiBackend
 from utils.dataloaders import IMG_FORMATS, VID_FORMATS, LoadImages, LoadStreams
-from utils.general import (LOGGER, check_file, check_img_size, check_imshow, check_requirements, colorstr, cv2,
-                           increment_path, non_max_suppression, print_args, scale_coords, strip_optimizer, xyxy2xywh)
-from utils.plots import Annotator, colors, save_one_box
+from utils.general import (check_file, check_img_size, check_imshow, check_requirements, cv2,
+                           increment_path, non_max_suppression, print_args, scale_coords, LOGGER, colorstr,
+                           strip_optimizer, xyxy2xywh)
+from utils.plots import Annotator, save_one_box, colors
 from utils.torch_utils import select_device, time_sync
-
-# local imports 
 import client
 from main import capture
 
@@ -60,6 +58,7 @@ def run(
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
 ):
+    global X, Y, W, H, boxes, result, te, x
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
@@ -141,6 +140,13 @@ def run(
                 if client.listen():
                     capture()
 
+
+
+                    x_coord = []
+                    y_coord = []
+                    w_coord = []
+                    h_coord = []
+
                     for *xyxy, conf, cls in reversed(det):
                         count += 1
                         c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
@@ -152,90 +158,102 @@ def run(
 
                         # print(x_coord, y_coord, w_coord, h_coord)
                         # print(center_point)
-                        x_coord = c1[0]
-                        y_coord = c1[1]
-                        w_coord = c2[0] - c1[0]
-                        h_coord = c2[1] - c1[1]
 
-                        boxes = x_coord + y_coord + w_coord + h_coord
 
-                        # conversion form a list to string
-                        #string_ints = [str(int) for int in boxes]
-                        #str_of_ints = ",".join(string_ints)
 
-                        r = requests.post(
-                            "http://art1x.pythonanywhere.com/snippets/",
-                            data=json.dumps({"X": x_coord,
-                                             "Y": y_coord,
-                                             "W": w_coord,
-                                             "H": h_coord,
-                                             "Amount": count
-                                             }),
-                            headers={'Authorization': 'Token 353101b2657b3779199777984c131f33b78656be',
-                                     "Content-Type": "application/json"},
-                        )
-                        print(r.status_code)
 
-                # Print results
-                for c in det[:, -1].unique():
-                    n = (det[:, -1] == c).sum()  # detections per class
-                    s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                        x_coord.append(c1[0])
+                        y_coord.append(c1[1])
 
-                # Write results
-                for *xyxy, conf, cls in reversed(det):
-                    if save_txt:  # Write to file
-                        xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
-                        line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
-                        with open(f'{txt_path}.txt', 'a') as f:
-                            f.write(('%g ' * len(line)).rstrip() % line + '\n')
+                        w = c2[0] - c1[0]
 
-                    if save_img or save_crop or view_img:  # Add bbox to image
-                        c = int(cls)  # integer class
-                        label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
-                        annotator.box_label(xyxy, label, color=colors(c, True))
-                    if save_crop:
-                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+                        w_coord.append(w)
 
-                    # Stream results
-                    im0 = annotator.result()
-                    if view_img:
-                        if platform.system() == 'Linux' and p not in windows:
-                            windows.append(p)
-                            cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
-                            cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                        cv2.imshow(str(p), im0)
-                        cv2.waitKey(1)  # 1 millisecond
+                        h = c2[1] - c1[1]
 
-                    # Save results (image with detections)
-                    if save_img:
-                        if dataset.mode == 'image':
-                            cv2.imwrite(save_path, im0)
-                        else:  # 'video' or 'stream'
-                            if vid_path[i] != save_path:  # new video
-                                vid_path[i] = save_path
-                                if isinstance(vid_writer[i], cv2.VideoWriter):
-                                    vid_writer[i].release()  # release previous video writer
-                                if vid_cap:  # video
-                                    fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                                    w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                                    h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                                else:  # stream
-                                    fps, w, h = 30, im0.shape[1], im0.shape[0]
-                                save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
-                                vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
-                            vid_writer[i].write(im0)
+                        h_coord.append(h)
 
-        # Print time (inference-only)
-        LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s)')
 
-    # Print results
-    t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
-    LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
-    if save_txt or save_img:
-        s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
-        LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
-    if update:
-        strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
+
+                        # Print results
+                        for c in det[:, -1].unique():
+                            n = (det[:, -1] == c).sum()  # detections per class
+                            s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+
+                        # Write results
+                        for *xyxy, conf, cls in reversed(det):
+                            if save_txt:  # Write to file
+                                xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
+                                line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
+                                with open(f'{txt_path}.txt', 'a') as f:
+                                    f.write(('%g ' * len(line)).rstrip() % line + '\n')
+
+                            if save_img or save_crop or view_img:  # Add bbox to image
+                                c = int(cls)  # integer class
+                                label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
+                                annotator.box_label(xyxy, label, color=colors(c, True))
+                            if save_crop:
+                                save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+
+                            # Stream results
+                            im0 = annotator.result()
+                            if view_img:
+                                import platform
+                                if platform.system() == 'Linux' and p not in windows:
+                                    windows.append(p)
+                                    cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
+                                    cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
+                                cv2.imshow(str(p), im0)
+                                cv2.waitKey(1)  # 1 millisecond
+
+                            # Save results (image with detections)
+                            if save_img:
+                                if dataset.mode == 'image':
+                                    cv2.imwrite(save_path, im0)
+                                else:  # 'video' or 'stream'
+                                    if vid_path[i] != save_path:  # new video
+                                        vid_path[i] = save_path
+                                        if isinstance(vid_writer[i], cv2.VideoWriter):
+                                            vid_writer[i].release()  # release previous video writer
+                                        if vid_cap:  # video
+                                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
+                                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                                        else:  # stream
+                                            fps, w, h = 30, im0.shape[1], im0.shape[0]
+                                        save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
+                                        vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
+                                    vid_writer[i].write(im0)
+
+
+                    Boxes = []
+
+                    for i in range(len(x_coord)):
+                        Boxes.append({"X": x_coord[i], "Y": y_coord[i], "W": w_coord[i], "H": h_coord[i]})
+
+                    url = "http://art1x.pythonanywhere.com/snippets/1/"
+                    username = "artemii"
+                    password = "admin"
+                    data = {'Boxes': json.dumps(Boxes)}
+                    response = requests.put(url, auth=(username, password), data=data)
+                    print(response.status_code)
+                    print(response.json())
+
+
+                    # Print time (inference-only)
+                    LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s)')
+
+
+                    client.scan_complete()
+
+                    # Print results
+                    # t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
+                    # LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
+                    # if save_txt or save_img:
+                    #     s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
+                    #     LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
+                    #     if update:
+                    #         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
 
 
 def parse_opt():

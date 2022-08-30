@@ -16,6 +16,12 @@ def listen():
     else:
         print('error')
 
+def scan_complete():
+
+    ws = create_connection("ws://23.254.176.188:8080")
+    ws.send('stop')
+    return True
+
 
 
 

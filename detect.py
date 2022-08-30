@@ -26,7 +26,7 @@ from utils.general import (check_file, check_img_size, check_imshow, check_requi
 from utils.plots import Annotator, save_one_box, colors
 from utils.torch_utils import select_device, time_sync
 import client
-from main import capture
+from capture import capture
 
 
 @torch.no_grad()

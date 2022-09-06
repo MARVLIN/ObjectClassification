@@ -28,7 +28,7 @@ The **_requests_** library is used to make a `PUT` request at `snippets/1/` to t
 
 
 
-###Server Module
+### Server Module
 Libraries used:
 - **_websockets_**
 - **_asyncio_**

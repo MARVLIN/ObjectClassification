@@ -1,17 +1,23 @@
-import websockets
-import asyncio
+from websocket import create_connection
 
+def listen():
 
+    # Connect to WebSocket API and subscribe to trade feed for XBT/USD and XRP/USD
+    ws = create_connection("ws://23.254.176.188:8080")
+    ws.send('Ready for capture')
 
-async def listen():
-    url = 'ws://23.254.176.188:8080'
+    # Infinite loop waiting for WebSocket data
+    count = 0
+    msg = ws.recv()
+    print(msg)
+    if msg != 'snap':
+        return True
+    else:
+        print('error')
 
-    async with websockets.connect(url) as ws:
-        await ws.send('Hello server')
+def scan_complete():
 
-        while True:
-            msg = await ws.recv()
-            print(msg)
+    ws = create_connection("ws://23.254.176.188:8080")
+    ws.send('stop')
+    return True
 
-
-asyncio.get_event_loop().run_until_complete(listen())

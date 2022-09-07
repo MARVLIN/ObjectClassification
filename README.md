@@ -54,7 +54,8 @@ lists when running `for loop` the program counts coordinates of the diagonal sid
 In addition, the program counts the centre of the detected area(s) for further projection purposes. 
 
   
-`x_coord = []
+```
+x_coord = []
 y_coord = []
 w_coord = []
 h_coord = []
@@ -81,9 +82,11 @@ for *xyxy, conf, cls in reversed(det):
 
     h = c2[1] - c1[1]
 
-    h_coord.append(h)`
+    h_coord.append(h)
+ ```
     
 Current snippet allows to make the detection from images and write results to `/runs/exp*` after detection ran
+
 ```
 #Print results
 for c in det[:, -1].unique():

@@ -139,7 +139,7 @@ for c in det[:, -1].unique():
                                             vid_writer[i].write(im0)
 ```
 
-After the program processed detection, it creates one single list with coordinates and sends this list as a JSON to [API Server](https://github.com/dcomradd/Rest_API_Framework#readme)
+After the program processed detection, it creates one single list with coordinates and sends this list as a JSON to [API Server](https://github.com/dcomradd/Rest_API_Framework#readme).
 Finally, `stop` is sent to the [Socket Server](https://github.com/dcomradd/ObjectClassification/tree/Module_Breakdown#readme)
         
 ```

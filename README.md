@@ -85,7 +85,7 @@ for *xyxy, conf, cls in reversed(det):
     h_coord.append(h)
  ```
     
-Current snippet allows to make the detection from images and write results to `/runs/exp*` after detection ran
+Current snippet allows to make the detection from images and write results to `/runs/exp*` after detection has been ran
 
 ```
 #Print results

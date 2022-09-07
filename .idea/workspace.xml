@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="18006b74-893b-4052-8eff-5491ae0eb2c5" name="Changes" comment="updated client and documentation">
+    <list default="true" id="18006b74-893b-4052-8eff-5491ae0eb2c5" name="Changes" comment="Updated Detection Model">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/best.pt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectionAreas.pt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660523794456</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Updated Detection Model">
+      <created>1662505246796</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1662505246796</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +264,8 @@
     <MESSAGE value="Updated file for detection + snap function" />
     <MESSAGE value="model for detecting windows in .pt &amp; .onnx formats + requirements.txt + export.py for exporting the model to .onnx format" />
     <MESSAGE value="automation of snap" />
-    <option name="LAST_COMMIT_MESSAGE" value="automation of snap" />
+    <MESSAGE value="Updated Detection Model" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Detection Model" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ObjectDetection2$main.coverage" NAME="main Coverage Results" MODIFIED="1657025654253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
